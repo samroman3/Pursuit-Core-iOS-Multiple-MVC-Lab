@@ -16,14 +16,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return animals.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableViewOut.dequeueReusableCell(withIdentifier: "mycell", for: indexPath) as? AnimalTVC {
+            cell.imageOut.image = UIImage(named: "\(animals[indexPath.row].imageNumber)")
+            cell.labelName.text = animals[indexPath.row].name
+            cell.originLabel.text = animals[indexPath.row].origin
+            return cell
+        }
         return UITableViewCell()
     }
     
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
+    }
     
     
     
@@ -40,6 +48,23 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let segueIdentifier = segue.identifier else { fatalError("No identifier in segue")
+        }
+        switch segueIdentifier {
+        case "detailSegue":
+            guard let animalVC = segue.destination as? DetailViewController
+                else { fatalError("Unexpected segue")}
+            guard let selectedIndexPath = tableViewOut.indexPathForSelectedRow else {
+                fatalError("No row selected")
+            }
+            animalVC.selected = animals[selectedIndexPath.row]
+        default:
+            fatalError("Unexpected segue identifier")
+        }
     }
 
 
