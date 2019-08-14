@@ -146,7 +146,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             case 4:
                 animalVC.selected = insects[selectedIndexPath.row]
             default:
-               " "
+               break
             }
         default:
             fatalError("Unexpected segue identifier")
